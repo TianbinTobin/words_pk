@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <div class="app_container">
-      <div class="header">
-        <div class="player_list" @click="nextExam()">{{time}}</div>
-      </div>
+      <player :user="user" @next-exam="nextExam"></player>
       <transition
         name="custom-classes-transition"
         enter-active-class="animated fadeIn"
@@ -29,10 +27,15 @@
 </template>
 
 <script>
+  import player from './components/Player.vue'
   export default {
     name: 'app',
+    components: {
+      player
+    },
     data: function () {
       return {
+        user: 'Tianbin',
         exam: {
           id: 1,
           title: '下面哪个单词是你好的意思？',
@@ -81,6 +84,8 @@
         this.index++
         this.examHide()
         this.questionNumShow()
+        this.resetCountDown()
+        this.warningShow()
         if (this.setTimeout) {
           clearTimeout(this.setTimeout)
         }
@@ -97,55 +102,58 @@
         } else {
           clearTimeout(this.countDownTimeOut)
         }
+      },
+      resetCountDown () {
+        this.time = 31
+        if (this.countDownTimeOut) {
+          clearTimeout(this.countDownTimeOut)
+        }
+        this.countDown()
       }
     },
     mounted () {
       this.nextExam()
-      this.countDown()
+//      let socket = new WebSocket('ws://localhost:8181')
+//      socket.onopen = function () {
+//        console.log(1)
+//      }let socket = new WebSocket('ws://localhost:8181')
+//      socket.onopen = function () {
+//        console.log(1)
+//      }
     }
   }
 </script>
 
-<style>
+<style scoped>
   #app {
     width: 100%;
     height: 100%;
     position: relative;
-    background: #84d5f4;
+    background: #ffffff;
   }
   .app_container {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    height: 100%;
-  }
-  .header {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 2rem 64px;
-    height: 9rem;
-  }
-  .player_list {
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    border-radius: 3.5rem;
-    border: 1px solid red;
-    text-align: center;
+    min-height: 100%;
+    overflow: visible;
+    overflow-x: hidden;
+    position: absolute;
   }
   .body {
     width: 100%;
     box-sizing: border-box;
-    padding: 2rem 64px;
+    padding: 2rem 3rem;
   }
   .exam_title {
     width: 100%;
-    height: 5rem;
+    min-height: 10rem;
     text-align: center;
     font-size: 24px;
-    color: #ffffff;
   }
   .exam_options {
     width: 100%;
-    min-height: 300px;
+    min-height: 25rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -155,8 +163,8 @@
     text-align: center;
     box-sizing: border-box;
     height: 50px;
-    border: 4px solid #fff;
-    border-radius: 12px;
+    border: 1px solid #CBCBCB;
+    border-radius: 100px;
     font-size: 18px;
   }
   .exam_option_text {
@@ -171,7 +179,7 @@
     flex-wrap: wrap;
   }
   .wrapper_warning_left, .wrapper_warning_right {
-    width: 64px;
+    width: 4rem;
     height: 100%;
     position: absolute;
     top: 0;

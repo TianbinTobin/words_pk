@@ -21,3 +21,23 @@ html {
     font-size: 125%!important; /* 20÷16=125% */
   }
 }
+
+.fl {
+  float: left !important;
+}
+
+.fr {
+  float: right !important;
+}
+
+/*清除浮动*/
+.clearfix:before {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  display: table;
+  clear: both;
+  content: "";
+}
