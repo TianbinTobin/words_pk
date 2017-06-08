@@ -3,8 +3,11 @@
     <div class="player_list clearfix" @click="nextExam">
       <div class="player_score">33/25</div>
       <div class="player_item_l fl clearfix">
-        <div class="player_logo fl">
-          <img src="../assets/logo.png">
+        <div class="player_logo">
+          <div class="player_logo_cover">
+            <span class="label">{{time}}</span>
+          </div>
+          <img src="../assets/player_1_logo.png">
         </div>
         <div class="player_label">
           <div class="player_user fl">{{user}}</div>
@@ -14,8 +17,11 @@
         </div>
       </div>
       <div class="player_item_r fr clearfix">
-        <div class="player_logo fr">
-          <img src="../assets/logo.png">
+        <div class="player_logo">
+          <div class="player_logo_cover">
+            <span class="label">{{time}}</span>
+          </div>
+          <img src="../assets/player_2_logo.png">
         </div>
         <div class="player_label">
           <div class="player_user fr">{{user}}</div>
@@ -30,7 +36,7 @@
 <script>
   export default {
     name: 'player',
-    props: ['user'],
+    props: ['user', 'time'],
     methods: {
       nextExam () {
         this.$emit('next-exam')
@@ -80,6 +86,20 @@
   }
   .player_item_r .player_logo {
     right: 0;
+  }
+  .player_logo_cover{
+    position: absolute;
+    display: table;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.37);
+    font-size: 2rem;
+    color: #FFFFFF;
+  }
+  .player_logo_cover .label {
+    vertical-align: middle;
+    display: table-cell;
   }
   .player_logo {
     position: absolute;
