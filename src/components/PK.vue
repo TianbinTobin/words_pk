@@ -9,7 +9,9 @@
         <div class="body" v-show="examDisplay">
           <div class="exam_title">{{exam.title}}</div>
           <div class="exam_options">
-            <div class="exam_option" v-for="item in exam.options">
+            <div class="exam_option" v-for="item in exam.options" @click="optionClick(item.id, item.answer)">
+              <div class="exam_option_icon_left" v-show="item.answer"></div>
+              <div class="exam_option_icon_right" v-show="item.answer"></div>
               <span class="exam_option_text">{{item.content}}</span>
             </div>
           </div>
@@ -41,15 +43,23 @@
           title: '下面哪个单词是你好的意思？',
           options: [
             {
+              id: 1,
+              answer: true,
               content: 'Hello'
             },
             {
+              id: 2,
+              answer: false,
               content: 'What'
             },
             {
+              id: 3,
+              answer: false,
               content: 'How'
             },
             {
+              id: 4,
+              answer: false,
               content: 'Yeah'
             }
           ]
@@ -114,14 +124,23 @@
           clearTimeout(this.countDownTimeOut)
         }
         this.countDown()
+      },
+      optionClick (id, answer) {
+        if (answer === true) {
+          for (let i = 0, len = this.exam.options.length; i < len; i++) {
+            if (this.exam.options[i].id === id) {
+              this.exam.options[i].answer = false
+            }
+          }
+        }
       }
     },
     mounted () {
       this.nextExam()
-      let socket = new WebSocket('ws://localhost:8181?appId=123')
-      socket.onopen = function () {
-        console.log(1)
-      }
+//      let socket = new WebSocket('ws://localhost:8181?appId=123')
+//      socket.onopen = function () {
+//        console.log(1)
+//      }
     }
   }
 </script>
@@ -135,17 +154,20 @@
     overflow-x: hidden;
     position: absolute;
   }
+
   .body {
     width: 100%;
     box-sizing: border-box;
     padding: 2rem 3rem;
   }
+
   .exam_title {
     width: 100%;
     min-height: 10rem;
     text-align: center;
     font-size: 24px;
   }
+
   .exam_options {
     width: 100%;
     min-height: 25rem;
@@ -153,6 +175,7 @@
     flex-direction: column;
     justify-content: space-between;
   }
+
   .exam_option {
     width: 100%;
     text-align: center;
@@ -161,7 +184,33 @@
     border: 1px solid #CBCBCB;
     border-radius: 100px;
     font-size: 18px;
+    position: relative;
   }
+
+  .exam_option_icon_left {
+    position: absolute;
+    height: 3rem;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 5.5rem;
+    background: url("../assets/img_tank_right.png") no-repeat center;
+    background-size: contain;
+  }
+
+  .exam_option_icon_right {
+    position: absolute;
+    height: 3rem;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 5.5rem;
+    background: url("../assets/img_tank_left.png") no-repeat center;
+    background-size: contain;
+  }
+
   .exam_option_text {
     width: 100%;
     height: 100%;
@@ -173,6 +222,7 @@
     align-content: space-between;
     flex-wrap: wrap;
   }
+
   .wrapper_warning_left, .wrapper_warning_right {
     width: 4rem;
     height: 100%;
@@ -180,14 +230,17 @@
     top: 0;
     animation: wrapper_warning_action 1s ease-in-out infinite;
   }
+
   .wrapper_warning_left {
     left: 0;
     background: linear-gradient(90deg, #ed654b, rgba(237, 101, 75, 0))
   }
+
   .wrapper_warning_right {
     right: 0;
     background: linear-gradient(270deg, #ed654b, rgba(237, 101, 75, 0))
   }
+
   @keyframes wrapper_warning_action {
     0% {
       opacity: .01
@@ -199,6 +252,7 @@
       opacity: .01
     }
   }
+
   .question_num_container {
     width: 100%;
     height: 100%;
@@ -211,6 +265,7 @@
     transition: all;
     transform: translate3d(100%, 0, 0)
   }
+
   .question_num_label {
     width: 20rem;
     height: 8rem;
@@ -221,6 +276,7 @@
     background: url(../assets/bg-question-label.png) no-repeat 0;
     background-size: 100%
   }
+
   .question_number_animating {
     animation: question_number_move 1.8s cubic-bezier(0, 1, 1, 0) .1s 1
   }
