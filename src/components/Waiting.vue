@@ -41,10 +41,10 @@
           <div class="radar_player">
             <div class="radar_player_pk" :class="{animation_pk_vs: state.animation_pk_vs}"></div>
             <div class="radar_player_a" :class="{radar_player_a_move: state.radar_player_b_move}">
-              <img :src="user.logo">
+              <img :src="user.logo" src="../assets/player_1_logo.png">
             </div>
             <div class="radar_player_b" v-show="state.findRival" :class="{radar_player_b_move: state.radar_player_b_move}">
-              <img :src="user.logo">
+              <img :src="user.logo" src="../assets/player_2_logo.png">
             </div>
           </div>
           <div class="radar_d"></div>
@@ -64,7 +64,7 @@
       return {
         friendPK: true,
         user: {
-          logo: '/static/img/player_1_logo.b342afe.png'
+          logo: '/static/img/player_1_logo.png'
         },
         state: {
           w_player_move_left: false,
@@ -178,6 +178,7 @@
   }
 
   .radar_player_a {
+    box-sizing: border-box;
     position: absolute;
     top: 0;
     left: 0;
@@ -193,6 +194,7 @@
   }
 
   .radar_player_b {
+    box-sizing: border-box;
     position: absolute;
     top: 0;
     left: 0;
@@ -234,7 +236,6 @@
 
   .radar_player_pk {
     position: absolute;
-    z-index: 4;
     left: 0;
     right: 5px;
     top: 0;
