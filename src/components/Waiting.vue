@@ -43,7 +43,8 @@
             <div class="radar_player_a" :class="{radar_player_a_move: state.radar_player_b_move}">
               <img :src="user.logo" src="../assets/player_1_logo.png">
             </div>
-            <div class="radar_player_b" v-show="state.findRival" :class="{radar_player_b_move: state.radar_player_b_move}">
+            <div class="radar_player_b" v-show="state.findRival"
+                 :class="{radar_player_b_move: state.radar_player_b_move}">
               <img :src="user.logo" src="../assets/player_2_logo.png">
             </div>
           </div>
@@ -66,6 +67,18 @@
         user: {
           logo: '/static/img/player_1_logo.png'
         },
+        param: {
+          studentId: this.query.studentId,
+          friendId: this.query.friendId,
+          roundResult: 0,
+          criticalNum: 0,
+          challengeTime: new Date(),
+          score: 0,
+          examNum: 0,
+          rightNum: 0,
+          wrongNum: 0,
+          contentId: null
+        },
         state: {
           w_player_move_left: false,
           w_player_move_right: false,
@@ -79,8 +92,8 @@
     },
     methods: {
       cancelPK () {
-//        this.$router.push('/pk')
-        this.start()
+        console.log('socket close')
+        this.socket.close()
       },
       start () {
         this.stateChange()
@@ -97,6 +110,26 @@
         this.state.btnShow = false
         this.state.findRival = true
         this.state.radar_player_b_move = true
+      }
+    },
+    beforeCreate () {
+      this.query = this.$route.query
+    },
+    mounted () {
+      const _this = this
+      _this.socket = new WebSocket('ws://192.168.0.152:8085/ws?studentId=' + this.param.studentId)
+      _this.socket.onopen = function () {
+        console.log(_this.socket)
+        _this.socket.send(JSON.stringify(_this.param))
+        // 监听消息
+        _this.socket.onmessage = function (event) {
+          console.log('Client received a message', event)
+        }
+
+        // 监听Socket的关闭
+        _this.socket.onclose = function (event) {
+          console.log('Client notified socket has closed', event)
+        }
       }
     }
   }
@@ -220,13 +253,21 @@
   }
 
   @keyframes radar_player_a_move {
-    from {right: 0}
-    to {right: 46%}
+    from {
+      right: 0
+    }
+    to {
+      right: 46%
+    }
   }
 
   @keyframes radar_player_b_move {
-    from {left: 0}
-    to {left: 46%}
+    from {
+      left: 0
+    }
+    to {
+      left: 46%
+    }
   }
 
   .radar_player_a img, .radar_player_b img {

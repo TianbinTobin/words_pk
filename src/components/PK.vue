@@ -1,9 +1,15 @@
 <template>
   <div>
     <div class="app_container">
-      <player :user="user" :time="time" @next-exam="nextExam"></player>
+      <player ref="player" :user="user" :time="time" :current="currentExam" :total="examList.length" @next-exam="nextExam"></player>
       <div class="body">
-        <exam :exam-list="examList" ref="exam"></exam>
+        <transition-group
+          tag="div"
+          name="custom-classes-transition"
+          enter-active-class="animated slideInRight"
+          leave-active-class="animated slideOutLeft">
+          <exam-item ref="exam" v-for="(exam, index) in examList" :key="exam" :exam-item="exam" :exam-index="index" v-show="(index === currentExam)"></exam-item>
+        </transition-group>
       </div>
     </div>
     <div class="wrapper_container" v-show="warning">
@@ -15,16 +21,17 @@
 
 <script>
   import player from '../components/Player.vue'
-  import exam from '../components/Exam.vue'
+  import examItem from './Exam.vue'
   export default {
     name: 'pk',
     components: {
       player,
-      exam
+      examItem
     },
     data: function () {
       return {
         user: 'Tianbin',
+        currentExam: 0,
         examList: [
           {
             id: 1,
@@ -53,7 +60,7 @@
             ]
           },
           {
-            id: 1,
+            id: 11,
             title: '下面哪个单词是哈喽的意思？',
             options: [
               {
@@ -82,7 +89,6 @@
         examDisplay: false,
         questionNumDisplay: false,
         warning: false,
-        index: 0,
         time: 31
       }
     },
@@ -94,6 +100,7 @@
         this.warning = false
       },
       nextExam () {
+        this.setOtherCheck(1, 2)
         if (this.countDownTimeOut) {
           clearTimeout(this.countDownTimeOut)
         }
@@ -103,9 +110,8 @@
         this.setTimeout = setTimeout(this.changeExam, 1000)
       },
       changeExam () {
-        this.index++
+        this.currentExam++
         this.resetCountDown()
-        this.$refs.exam.nextExam()
       },
       countDown () {
         if (this.time > 0) {
@@ -127,10 +133,19 @@
           clearTimeout(this.countDownTimeOut)
         }
         this.countDown()
+      },
+      setOtherCheck (id, answer) {
+        this.$refs.exam.forEach(function (item) {
+          if (item.examItem.id === id) {
+            item.setOtherCheck(answer)
+          }
+        })
       }
     },
     mounted () {
-//      let socket = new WebSocket('ws://localhost:8181?appId=123')
+      this.setOtherCheck()
+//      this.countDown()
+//      let socket = new WebSocket('ws://192.168.0.152:8085')
 //      socket.onopen = function () {
 //        console.log(1)
 //      }

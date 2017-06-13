@@ -1,7 +1,17 @@
 <template>
-  <div class="exam_option" @click="optionClick()">
-    <div class="exam_option_icon_left" v-show="meCheck"></div>
-    <div class="exam_option_icon_right" v-show="otherCheck"></div>
+  <div class="exam_option" :class="{me: meCheck}" @click="optionClick()">
+    <transition
+      name="custom-classes-transition"
+      enter-active-class="animated slideInLeft"
+      leave-active-class="animated slideOutLeft">
+      <div class="exam_option_icon_left" v-show="meCheck"></div>
+    </transition>
+    <transition
+      name="custom-classes-transition"
+      enter-active-class="animated slideInRight"
+      leave-active-class="animated slideOutRight">
+      <div class="exam_option_icon_right" v-show="otherCheck"></div>
+    </transition>
     <span class="exam_option_text">{{examOption.content}}</span>
   </div>
 </template>
@@ -15,14 +25,19 @@
         otherCheck: false
       }
     },
-    props: ['examOption'],
+    props: ['examOption', 'answer'],
     methods: {
       optionClick () {
-        if (this.$parent.answer) {
+        if (this.answer) {
           return
         }
         this.meCheck = true
         this.$emit('exam-option-click', this.examOption.id)
+      },
+      setOtherCheck (id) {
+        if (this.examOption.id === id) {
+          this.otherCheck = true
+        }
       }
     }
   }
@@ -40,10 +55,19 @@
     position: relative;
   }
 
+  .exam_option.me {
+    border: 0;
+    background: #27D4D7;
+  }
+
+  .me .exam_option_text{
+    color: #ffffff;
+  }
+
   .exam_option_icon_left {
     position: absolute;
     height: 3rem;
-    left: 0;
+    left: -30px;
     top: 0;
     bottom: 0;
     margin: auto;
@@ -55,7 +79,7 @@
   .exam_option_icon_right {
     position: absolute;
     height: 3rem;
-    right: 0;
+    right: -30px;
     top: 0;
     bottom: 0;
     margin: auto;
