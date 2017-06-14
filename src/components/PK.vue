@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="app_container">
-      <player ref="player" :user="user" :time="time" :current="currentExam" :total="examList.length" @next-exam="nextExam"></player>
+      <player ref="player" :user="user" :time="time" :current="currentExam" :total="examData.total" @next-exam="nextExam"></player>
       <div class="body">
         <transition-group
           tag="div"
           name="custom-classes-transition"
           enter-active-class="animated slideInRight"
           leave-active-class="animated slideOutLeft">
-          <exam-item ref="exam" v-for="(exam, index) in examList" :key="exam" :exam-item="exam" :exam-index="index" v-show="(index === currentExam)"></exam-item>
+          <exam-item ref="exam" v-for="(exam, index) in examData.data" :key="exam" :exam-item="exam" :exam-index="index" v-show="(index === currentExam)"></exam-item>
         </transition-group>
       </div>
     </div>
@@ -28,6 +28,7 @@
       player,
       examItem
     },
+    props: ['player', 'examData'],
     data: function () {
       return {
         user: 'Tianbin',
@@ -144,11 +145,6 @@
     },
     mounted () {
       this.setOtherCheck()
-//      this.countDown()
-//      let socket = new WebSocket('ws://192.168.0.152:8085')
-//      socket.onopen = function () {
-//        console.log(1)
-//      }
     }
   }
 </script>

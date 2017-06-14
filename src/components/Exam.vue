@@ -1,6 +1,6 @@
 <template>
   <div class="exam_body">
-    <div class="exam_title">{{examItem.title}}</div>
+    <div class="exam_title">{{examItem.stems.wordName}}</div>
     <div class="exam_options">
       <exam-option v-for="item in examItem.options" :key="item" :exam-option="item" :answer="answer" @exam-option-click="optionClick"></exam-option>
     </div>

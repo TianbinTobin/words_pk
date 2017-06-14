@@ -18,7 +18,7 @@
             <div class="w_player_a"></div>
             <div class="w_player_b"></div>
             <div class="w_player_c">
-              <img src="../assets/player_2_logo.png">
+              <img src="../assets/player_0_logo.png">
             </div>
           </div>
         </div>
@@ -61,23 +61,12 @@
 <script>
   export default {
     name: 'Waiting',
+    props: ['player'],
     data () {
       return {
         friendPK: true,
         user: {
           logo: '/static/img/player_1_logo.png'
-        },
-        param: {
-          studentId: this.query.studentId,
-          friendId: this.query.friendId,
-          roundResult: 0,
-          criticalNum: 0,
-          challengeTime: new Date(),
-          score: 0,
-          examNum: 0,
-          rightNum: 0,
-          wrongNum: 0,
-          contentId: null
         },
         state: {
           w_player_move_left: false,
@@ -110,26 +99,6 @@
         this.state.btnShow = false
         this.state.findRival = true
         this.state.radar_player_b_move = true
-      }
-    },
-    beforeCreate () {
-      this.query = this.$route.query
-    },
-    mounted () {
-      const _this = this
-      _this.socket = new WebSocket('ws://192.168.0.152:8085/ws?studentId=' + this.param.studentId)
-      _this.socket.onopen = function () {
-        console.log(_this.socket)
-        _this.socket.send(JSON.stringify(_this.param))
-        // 监听消息
-        _this.socket.onmessage = function (event) {
-          console.log('Client received a message', event)
-        }
-
-        // 监听Socket的关闭
-        _this.socket.onclose = function (event) {
-          console.log('Client notified socket has closed', event)
-        }
       }
     }
   }
