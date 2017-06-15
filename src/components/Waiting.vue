@@ -11,14 +11,14 @@
             <div class="w_player_a"></div>
             <div class="w_player_b"></div>
             <div class="w_player_c">
-              <img src="../assets/player_1_logo.png">
+              <img :src="player.l_player.photo">
             </div>
           </div>
           <div class="w_player pb" :class="{move_right: state.w_player_move_right}">
             <div class="w_player_a"></div>
             <div class="w_player_b"></div>
             <div class="w_player_c">
-              <img src="../assets/player_0_logo.png">
+              <img :src="player.r_player.photo">
             </div>
           </div>
         </div>
@@ -41,11 +41,11 @@
           <div class="radar_player">
             <div class="radar_player_pk" :class="{animation_pk_vs: state.animation_pk_vs}"></div>
             <div class="radar_player_a" :class="{radar_player_a_move: state.radar_player_b_move}">
-              <img :src="user.logo" src="../assets/player_1_logo.png">
+              <img :src="player.l_player.photo">
             </div>
             <div class="radar_player_b" v-show="state.findRival"
                  :class="{radar_player_b_move: state.radar_player_b_move}">
-              <img :src="user.logo" src="../assets/player_2_logo.png">
+              <img :src="player.r_player.photo">
             </div>
           </div>
           <div class="radar_d"></div>
@@ -65,9 +65,6 @@
     data () {
       return {
         friendPK: true,
-        user: {
-          logo: '/static/img/player_1_logo.png'
-        },
         state: {
           w_player_move_left: false,
           w_player_move_right: false,
@@ -79,10 +76,18 @@
         }
       }
     },
+    beforeCreate () {
+      this.query = this.$route.query
+    },
+    created () {
+      if (this.query.mode === '2') {
+        this.friendPK = false
+      }
+    },
     methods: {
       cancelPK () {
         console.log('socket close')
-        this.socket.close()
+        this.$emit('close-socket')
       },
       start () {
         this.stateChange()

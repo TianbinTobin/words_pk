@@ -25,9 +25,11 @@
         this.answer = true
       },
       setOtherCheck (id) {
-        this.$children.forEach(function (item) {
-          item.setOtherCheck(id)
-        })
+        if (this.$children.length > 0) {
+          this.$children.forEach(function (item) {
+            item.setOtherCheck(id)
+          })
+        }
       }
     }
   }

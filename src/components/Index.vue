@@ -1,6 +1,6 @@
 <template>
   <pk ref="pk" v-if="pk" :player="player" :exam-data="exam"></pk>
-  <waiting v-else ref="wait" :player="player"></waiting>
+  <waiting v-else ref="wait" :player="player" @close-socket="closeSocket"></waiting>
 </template>
 
 <script>
@@ -17,10 +17,12 @@
         pk: false,
         player: {
           l_player: {
-            photo: '/static/img/player_1_logo.png'
+            photo: this.query.photo,
+            realName: 'Tianbin'
           },
           r_player: {
-            photo: '/static/img/player_0_logo.png'
+            photo: require('../assets/player_0_logo.png'),
+            realName: ''
           }
         },
         exam: {
@@ -32,14 +34,41 @@
           friendId: this.query.friendId,
           roundResult: 0,
           criticalNum: 0,
-          challengeTime: new Date(),
+          challengeTime: new Date().getTime(),
           score: 0,
           examNum: 0,
           rightNum: 0,
           wrongNum: 0,
           contentId: null,
-          userModel: 1
+          userMode: 2
         }
+      }
+    },
+    methods: {
+      closeSocket () {
+        this.socket.close()
+      },
+      sendMsg (msg) {
+        this.socket.send(JSON.stringify(msg))
+      },
+      pkStart (data) {
+        console.log(JSON.parse(data))
+        if (JSON.parse(data).userStudentPkFrom) {
+          this.player.l_player = JSON.parse(data).userStudentPkFrom
+          console.log(JSON.parse(data).userStudentPkFrom)
+        }
+        if (JSON.parse(data).userStudentPkTo) {
+          this.player.r_player = JSON.parse(data).userStudentPkTo
+          console.log(JSON.parse(data).userStudentPkTo)
+        }
+        if (JSON.parse(data).userStudentPkDetail.text) {
+          this.exam = JSON.parse(JSON.parse(data).userStudentPkDetail.text)
+          console.log(JSON.parse(JSON.parse(data).userStudentPkDetail.text))
+        }
+        this.pk = true
+      },
+      messageHandler (msg) {
+        this.pkStart(msg)
       }
     },
     beforeCreate () {
@@ -48,17 +77,14 @@
     mounted () {
       const _this = this
       if (this.param.studentId) {
-        _this.socket = new WebSocket('ws://192.168.0.152:8085/ws?studentId=' + this.param.studentId)
+        _this.socket = new WebSocket('ws://192.168.0.152:8085/ws?unitId=1&studentId=' + this.param.studentId)
         _this.socket.onopen = function () {
           console.log(_this.socket)
           _this.socket.send(JSON.stringify(_this.param))
           // 监听消息
           _this.socket.onmessage = function (event) {
             console.log('Client received a message', event)
-            console.log(JSON.parse(event.data))
-            _this.player.l_player = JSON.parse(event.data).userStudentPkFrom
-            _this.player.r_player = JSON.parse(event.data).userStudentPkTo
-            _this.exam = JSON.parse(JSON.parse(event.data).userStudentPkDetail.text)
+            _this.messageHandler(event.data)
           }
           // 监听错误
           _this.socket.onerror = function (event) {

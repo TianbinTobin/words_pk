@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="app_container">
-      <player ref="player" :user="user" :time="time" :current="currentExam" :total="examData.total" @next-exam="nextExam"></player>
+      <player ref="player" :player="player" :time="time" :current="currentExam" :total="examData.total" @next-exam="nextExam"></player>
       <div class="body">
         <transition-group
           tag="div"
@@ -31,62 +31,7 @@
     props: ['player', 'examData'],
     data: function () {
       return {
-        user: 'Tianbin',
         currentExam: 0,
-        examList: [
-          {
-            id: 1,
-            title: '下面哪个单词是你好的意思？',
-            options: [
-              {
-                id: 1,
-                answer: true,
-                content: 'Hello'
-              },
-              {
-                id: 2,
-                answer: false,
-                content: 'What'
-              },
-              {
-                id: 3,
-                answer: false,
-                content: 'How'
-              },
-              {
-                id: 4,
-                answer: false,
-                content: 'Yeah'
-              }
-            ]
-          },
-          {
-            id: 11,
-            title: '下面哪个单词是哈喽的意思？',
-            options: [
-              {
-                id: 1,
-                answer: false,
-                content: 'How'
-              },
-              {
-                id: 2,
-                answer: false,
-                content: 'What'
-              },
-              {
-                id: 3,
-                answer: true,
-                content: 'Hello'
-              },
-              {
-                id: 4,
-                answer: false,
-                content: 'Yeah'
-              }
-            ]
-          }
-        ],
         examDisplay: false,
         questionNumDisplay: false,
         warning: false,
@@ -136,11 +81,13 @@
         this.countDown()
       },
       setOtherCheck (id, answer) {
-        this.$refs.exam.forEach(function (item) {
-          if (item.examItem.id === id) {
-            item.setOtherCheck(answer)
-          }
-        })
+        if (this.$refs.exam.length > 0) {
+          //        this.$refs.exam.forEach(function (item) {
+//          if (item.examItem.id === id) {
+//            item.setOtherCheck(answer)
+//          }
+//        })
+        }
       }
     },
     mounted () {

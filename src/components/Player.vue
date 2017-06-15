@@ -15,10 +15,10 @@
           <div class="player_logo_cover">
             <span class="label">{{time}}</span>
           </div>
-          <img src="../assets/player_1_logo.png">
+          <img :src="player.l_player.photo">
         </div>
         <div class="player_label">
-          <div class="player_user fl">{{user}}</div>
+          <div class="player_user fl">{{player.l_player.realName}}</div>
         </div>
         <div class="player_progress clearfix">
           <div class="player_progress_score fr"></div>
@@ -29,10 +29,10 @@
           <div class="player_logo_cover">
             <span class="label">{{time}}</span>
           </div>
-          <img src="../assets/player_2_logo.png">
+          <img :src="player.r_player.photo">
         </div>
         <div class="player_label">
-          <div class="player_user fr">{{user}}</div>
+          <div class="player_user fr">{{player.r_player.realName}}</div>
         </div>
         <div class="player_progress clearfix">
           <div class="player_progress_score fl"></div>
@@ -49,7 +49,7 @@
         criticalShow: false
       }
     },
-    props: ['user', 'time', 'total', 'current'],
+    props: ['player', 'time', 'total', 'current'],
     methods: {
       nextExam () {
         this.$emit('next-exam')

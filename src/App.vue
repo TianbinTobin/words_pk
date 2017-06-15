@@ -5,11 +5,11 @@
 </template>
 
 <script>
-  import pk from './components/PK.vue'
+  import index from './components/Index.vue'
   export default {
     name: 'app',
     components: {
-      pk
+      index
     }
   }
 </script>
