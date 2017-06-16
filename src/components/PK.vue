@@ -8,7 +8,7 @@
           name="custom-classes-transition"
           enter-active-class="animated slideInRight"
           leave-active-class="animated slideOutLeft">
-          <exam-item ref="exam" v-for="(exam, index) in examData.data" :key="exam" :exam-item="exam" :exam-index="index" v-show="(index === currentExam)"></exam-item>
+          <exam-item ref="exam" @send-msg="setMsg" v-for="(exam, index) in examData.data" :key="exam" :exam-item="exam" :exam-index="index" v-show="(index === currentExam)"></exam-item>
         </transition-group>
       </div>
     </div>
@@ -35,7 +35,7 @@
         examDisplay: false,
         questionNumDisplay: false,
         warning: false,
-        time: 31
+        time: 20
       }
     },
     methods: {
@@ -56,8 +56,10 @@
         this.setTimeout = setTimeout(this.changeExam, 1000)
       },
       changeExam () {
-        this.currentExam++
-        this.resetCountDown()
+        if (this.currentExam < this.examData.total - 1) {
+          this.currentExam++
+          this.resetCountDown()
+        }
       },
       countDown () {
         if (this.time > 0) {
@@ -74,11 +76,21 @@
         }
       },
       resetCountDown () {
-        this.time = 31
+        this.time = 20
         if (this.countDownTimeOut) {
           clearTimeout(this.countDownTimeOut)
         }
         this.countDown()
+      },
+      setMyMsg (data) {
+        console.log(data)
+      },
+      setOtherMsg (data) {
+        console.log(data)
+      },
+      setMsg (param) {
+        param.useTime = 20 - this.time
+        this.$root.Bus.$emit('send-msg', param)
       },
       setOtherCheck (id, answer) {
         if (this.$refs.exam.length > 0) {
@@ -91,7 +103,7 @@
       }
     },
     mounted () {
-      this.setOtherCheck()
+      this.resetCountDown()
     }
   }
 </script>

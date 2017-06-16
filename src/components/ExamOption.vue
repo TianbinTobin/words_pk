@@ -22,17 +22,27 @@
     data () {
       return {
         meCheck: false,
-        otherCheck: false
+        otherCheck: false,
+        param: {
+          roundResult: 0,
+          criticalNum: 0,
+          score: 0,
+          examNum: 0,
+          optionNum: 0,
+          useTime: 0
+        }
       }
     },
-    props: ['examOption', 'answer'],
+    props: ['examOption', 'answer', 'optionIndex'],
     methods: {
       optionClick () {
         if (this.answer) {
           return
         }
         this.meCheck = true
-        this.$emit('exam-option-click', this.examOption.id)
+        this.param.roundResult = this.examOption.answer
+        this.param.optionNum = this.optionIndex
+        this.$emit('exam-option-click', this.param)
       },
       setOtherCheck (id) {
         if (this.examOption.id === id) {

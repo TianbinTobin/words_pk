@@ -15,6 +15,8 @@
     data () {
       return {
         pk: false,
+        studentId: this.query.studentId,
+        friendId: this.query.friendId,
         player: {
           l_player: {
             photo: this.query.photo,
@@ -26,8 +28,33 @@
           }
         },
         exam: {
-          data: [],
-          total: 0
+          data: [
+            {
+              stems: {
+                wordName: 'Hello',
+                wordConvertPath: 'http://192.168.0.203/media/audio/201705/54cd57d15a4f4288898694421b569442.mp3'
+              },
+              options: [
+                {
+                  answer: true,
+                  text: 'Hello'
+                },
+                {
+                  answer: false,
+                  text: 'Hello'
+                },
+                {
+                  answer: false,
+                  text: 'Hello'
+                },
+                {
+                  answer: false,
+                  text: 'Hello'
+                }
+              ]
+            }
+          ],
+          total: 1
         },
         param: {
           studentId: this.query.studentId,
@@ -37,10 +64,12 @@
           challengeTime: new Date().getTime(),
           score: 0,
           examNum: 0,
+          optionNum: 0,
           rightNum: 0,
           wrongNum: 0,
           contentId: null,
-          userMode: 2
+          userMode: this.query.mode,
+          useTime: 0
         }
       }
     },
@@ -49,26 +78,39 @@
         this.socket.close()
       },
       sendMsg (msg) {
-        this.socket.send(JSON.stringify(msg))
+        console.log(msg)
+//        this.socket.send(JSON.stringify(msg))
       },
       pkStart (data) {
-        console.log(JSON.parse(data))
-        if (JSON.parse(data).userStudentPkFrom) {
-          this.player.l_player = JSON.parse(data).userStudentPkFrom
-          console.log(JSON.parse(data).userStudentPkFrom)
+        console.log(data)
+        if (data.userStudentPkFrom) {
+          console.log(data.userStudentPkFrom)
+          this.player.l_player = data.userStudentPkFrom
         }
-        if (JSON.parse(data).userStudentPkTo) {
-          this.player.r_player = JSON.parse(data).userStudentPkTo
-          console.log(JSON.parse(data).userStudentPkTo)
+        if (data.userStudentPkTo) {
+          console.log(data.userStudentPkTo)
+          this.player.r_player = data.userStudentPkTo
         }
-        if (JSON.parse(data).userStudentPkDetail.text) {
-          this.exam = JSON.parse(JSON.parse(data).userStudentPkDetail.text)
-          console.log(JSON.parse(JSON.parse(data).userStudentPkDetail.text))
+        if (data.userStudentPkDetail.text) {
+          console.log(JSON.parse(data.userStudentPkDetail.text))
+          this.exam = JSON.parse(data.userStudentPkDetail.text)
         }
         this.pk = true
       },
-      messageHandler (msg) {
-        this.pkStart(msg)
+      getMyMsg (data) {
+        this.$refs.pk.setMyMsg(data)
+      },
+      getOtherMsg (data) {
+        this.$refs.pk.setOtherMsg(data)
+      },
+      messageHandler (data) {
+        if (data.userStudentPkDetail.code === 2) {
+          this.pkStart(data)
+        } else if (data.userStudentPkDetail.code === 1) {
+          this.getMyMsg(data)
+        } else if (data.userStudentPkDetail.code === 3) {
+          this.getOtherMsg(data)
+        }
       }
     },
     beforeCreate () {
@@ -76,15 +118,16 @@
     },
     mounted () {
       const _this = this
-      if (this.param.studentId) {
-        _this.socket = new WebSocket('ws://192.168.0.152:8085/ws?unitId=1&studentId=' + this.param.studentId)
+      this.$root.Bus.$on('send-msg', this.sendMsg)
+      if (this.query.studentId) {
+        _this.socket = new WebSocket('ws://192.168.0.152:8085/ws?unitId=1&studentId=' + this.query.studentId)
         _this.socket.onopen = function () {
           console.log(_this.socket)
           _this.socket.send(JSON.stringify(_this.param))
           // 监听消息
           _this.socket.onmessage = function (event) {
             console.log('Client received a message', event)
-            _this.messageHandler(event.data)
+            _this.messageHandler(JSON.parse(event.data))
           }
           // 监听错误
           _this.socket.onerror = function (event) {
