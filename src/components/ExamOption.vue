@@ -29,7 +29,8 @@
           score: 0,
           examNum: 0,
           optionNum: 0,
-          useTime: 0
+          useTime: 0,
+          userMode: 3
         }
       }
     },
@@ -40,14 +41,12 @@
           return
         }
         this.meCheck = true
-        this.param.roundResult = this.examOption.answer
+        this.param.roundResult = this.examOption.answer ? 1 : 0
         this.param.optionNum = this.optionIndex
         this.$emit('exam-option-click', this.param)
       },
-      setOtherCheck (id) {
-        if (this.examOption.id === id) {
-          this.otherCheck = true
-        }
+      setChecked () {
+        this.otherCheck = true
       }
     }
   }

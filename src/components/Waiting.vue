@@ -77,7 +77,12 @@
       }
     },
     beforeCreate () {
-      this.query = this.$route.query
+      this.query = {
+        studentId: this.getQueryString('studentId'),
+        photo: this.getQueryString('photo'),
+        teacherId: this.getQueryString('teacherId'),
+        mode: this.getQueryString('mode')
+      }
     },
     created () {
       if (this.query.mode === '2') {

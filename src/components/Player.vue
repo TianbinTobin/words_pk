@@ -7,7 +7,7 @@
         enter-active-class="animated slideInLeft"
         leave-active-class="animated fadeOut">
         <div class="player_critical" v-show="criticalShow">
-          <span class="player_critical_label">X5</span>
+          <span class="player_critical_label">X{{PkDetailFrom.criticalNum}}</span>
         </div>
       </transition>
       <div class="player_item_l fl clearfix">
@@ -21,7 +21,7 @@
           <div class="player_user fl">{{player.l_player.realName}}</div>
         </div>
         <div class="player_progress clearfix">
-          <div class="player_progress_score fr"></div>
+          <div class="player_progress_score fr" :style="{ width: l_player_width + '%' }"></div>
         </div>
       </div>
       <div class="player_item_r fr clearfix">
@@ -35,7 +35,7 @@
           <div class="player_user fr">{{player.r_player.realName}}</div>
         </div>
         <div class="player_progress clearfix">
-          <div class="player_progress_score fl"></div>
+          <div class="player_progress_score fl" :style="{ width: r_player_width + '%' }"></div>
         </div>
       </div>
     </div>
@@ -46,10 +46,28 @@
     name: 'player',
     data () {
       return {
-        criticalShow: false
+        criticalShow: false,
+        fullScore: 515,
+        l_player_score: 0,
+        r_player_score: 0
       }
     },
-    props: ['player', 'time', 'total', 'current'],
+    computed: {
+      l_player_width: function () {
+        return this.l_player_score / this.fullScore * 100
+      },
+      r_player_width: function () {
+        return this.r_player_score / this.fullScore * 100
+      }
+    },
+    props: ['player', 'time', 'total', 'current', 'PkDetailFrom', 'PkDetailTo'],
+    watch: {
+      PkDetailFrom: function (val, oldVal) {
+        if (val.criticalNum > 0) {
+          this.runCritical()
+        }
+      }
+    },
     methods: {
       nextExam () {
         this.$emit('next-exam')
@@ -64,9 +82,6 @@
       criticalHide () {
         this.criticalShow = false
       }
-    },
-    mounted () {
-      setTimeout(this.runCritical, 2000)
     }
   }
 </script>
@@ -218,13 +233,11 @@
     border-bottom-left-radius: 56px;
     border-top-left-radius: 56px;
     background: #68C426;
-    width: 60%;
   }
 
   .player_item_r .player_progress_score {
     border-bottom-right-radius: 56px;
     border-top-right-radius: 56px;
     background: #FFDF4A;
-    width: 30%;
   }
 </style>

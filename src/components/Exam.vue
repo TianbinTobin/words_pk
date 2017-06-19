@@ -34,11 +34,9 @@
         param.examNum = this.examIndex
         this.$emit('send-msg', param)
       },
-      setOtherCheck (id) {
+      setOtherCheck (optionNum) {
         if (this.$children.length > 0) {
-          this.$children.forEach(function (item) {
-            item.setOtherCheck(id)
-          })
+          this.$children[optionNum].setChecked()
         }
       },
       playAudio () {

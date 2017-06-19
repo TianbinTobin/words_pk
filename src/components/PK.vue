@@ -1,14 +1,16 @@
 <template>
   <div>
     <div class="app_container">
-      <player ref="player" :player="player" :time="time" :current="currentExam" :total="examData.total" @next-exam="nextExam"></player>
+      <player ref="player" :player="player" :time="time" :current="currentExam" :total="examData.total"
+              :PkDetailFrom="PkDetailFrom" :PkDetailTo="PkDetailTo" @next-exam="nextExam"></player>
       <div class="body">
         <transition-group
           tag="div"
           name="custom-classes-transition"
           enter-active-class="animated slideInRight"
           leave-active-class="animated slideOutLeft">
-          <exam-item ref="exam" @send-msg="setMsg" v-for="(exam, index) in examData.data" :key="exam" :exam-item="exam" :exam-index="index" v-show="(index === currentExam)"></exam-item>
+          <exam-item ref="exam" @send-msg="setMsg" v-for="(exam, index) in examData.data" :key="exam" :exam-item="exam"
+                     :exam-index="index" v-show="(index === currentExam)"></exam-item>
         </transition-group>
       </div>
     </div>
@@ -28,14 +30,36 @@
       player,
       examItem
     },
-    props: ['player', 'examData'],
+    props: ['player', 'examData', 'PkDetailFrom', 'PkDetailTo'],
     data: function () {
       return {
         currentExam: 0,
         examDisplay: false,
         questionNumDisplay: false,
         warning: false,
-        time: 20
+        time: 20,
+        param: {
+          roundResult: 0,
+          criticalNum: 0,
+          score: 0,
+          examNum: 0,
+          optionNum: 0,
+          useTime: 0,
+          userMode: 3
+        }
+      }
+    },
+    watch: {
+      time: function (val, oldVal) {
+        if (val === 0) {
+          if (this.$refs.exam[this.currentExam].answer === false) {
+            this.$refs.exam[this.currentExam].answer = true
+            this.param.examNum = this.currentExam
+            this.param.optionNum = null
+            this.param.useTime = 20
+            this.$root.Bus.$emit('send-msg', this.param)
+          }
+        }
       }
     },
     methods: {
@@ -86,19 +110,17 @@
         console.log(data)
       },
       setOtherMsg (data) {
-        console.log(data)
+        if (data.optionNum !== null) {
+          this.setOtherCheck(data.examNum, data.optionNum)
+        }
       },
       setMsg (param) {
         param.useTime = 20 - this.time
         this.$root.Bus.$emit('send-msg', param)
       },
-      setOtherCheck (id, answer) {
+      setOtherCheck (examNum, optionNum) {
         if (this.$refs.exam.length > 0) {
-          //        this.$refs.exam.forEach(function (item) {
-//          if (item.examItem.id === id) {
-//            item.setOtherCheck(answer)
-//          }
-//        })
+          this.$refs.exam[examNum].setOtherCheck(optionNum)
         }
       }
     },

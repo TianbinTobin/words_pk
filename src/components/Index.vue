@@ -1,5 +1,5 @@
 <template>
-  <pk ref="pk" v-if="pk" :player="player" :exam-data="exam"></pk>
+  <pk ref="pk" v-if="pk" :player="player" :PkDetailFrom="userStudentPkDetailFrom" :PkDetailTo="userStudentPkDetailTo" :exam-data="exam"></pk>
   <waiting v-else ref="wait" :player="player" @close-socket="closeSocket"></waiting>
 </template>
 
@@ -15,8 +15,6 @@
     data () {
       return {
         pk: false,
-        studentId: this.query.studentId,
-        friendId: this.query.friendId,
         player: {
           l_player: {
             photo: this.query.photo,
@@ -56,6 +54,26 @@
           ],
           total: 1
         },
+        userStudentPkDetailFrom: {
+          code: 0,
+          criticalNum: 0,
+          examNum: 0,
+          optionNum: 0,
+          roundResult: 0,
+          score: 0,
+          useTime: 0,
+          userMode: 3
+        },
+        userStudentPkDetailTo: {
+          code: 0,
+          criticalNum: 0,
+          examNum: 0,
+          optionNum: 0,
+          roundResult: 0,
+          score: 0,
+          useTime: 0,
+          userMode: 3
+        },
         param: {
           studentId: this.query.studentId,
           friendId: this.query.friendId,
@@ -77,9 +95,11 @@
       closeSocket () {
         this.socket.close()
       },
-      sendMsg (msg) {
-        console.log(msg)
-//        this.socket.send(JSON.stringify(msg))
+      sendMsg (data) {
+        data.studentId = this.param.studentId
+        data.friendId = this.param.friendId
+        this.socket.send(JSON.stringify(data))
+        console.log(JSON.stringify(data))
       },
       pkStart (data) {
         console.log(data)
@@ -93,20 +113,25 @@
         }
         if (data.userStudentPkDetail.text) {
           console.log(JSON.parse(data.userStudentPkDetail.text))
+          this.param.studentId = data.userStudentPkDetail.studentId
+          this.param.friendId = data.userStudentPkDetail.friendId
           this.exam = JSON.parse(data.userStudentPkDetail.text)
         }
         this.pk = true
       },
       getMyMsg (data) {
-        this.$refs.pk.setMyMsg(data)
+        this.userStudentPkDetailFrom = data.userStudentPkDetail
+        this.$refs.pk.setMyMsg(data.userStudentPkDetail)
       },
       getOtherMsg (data) {
-        this.$refs.pk.setOtherMsg(data)
+        this.userStudentPkDetailTo = data.userStudentPkDetail
+        this.$refs.pk.setOtherMsg(data.userStudentPkDetail)
       },
       messageHandler (data) {
-        if (data.userStudentPkDetail.code === 2) {
+        console.log(data)
+        if (data.userStudentPkDetail.code === 1) {
           this.pkStart(data)
-        } else if (data.userStudentPkDetail.code === 1) {
+        } else if (data.userStudentPkDetail.code === 2) {
           this.getMyMsg(data)
         } else if (data.userStudentPkDetail.code === 3) {
           this.getOtherMsg(data)
@@ -114,7 +139,12 @@
       }
     },
     beforeCreate () {
-      this.query = this.$route.query
+      this.query = {
+        studentId: this.getQueryString('studentId'),
+        photo: this.getQueryString('photo'),
+        friendId: this.getQueryString('friendId'),
+        mode: this.getQueryString('mode')
+      }
     },
     mounted () {
       const _this = this
@@ -123,6 +153,7 @@
         _this.socket = new WebSocket('ws://192.168.0.152:8085/ws?unitId=1&studentId=' + this.query.studentId)
         _this.socket.onopen = function () {
           console.log(_this.socket)
+          console.log(JSON.stringify(_this.param))
           _this.socket.send(JSON.stringify(_this.param))
           // 监听消息
           _this.socket.onmessage = function (event) {
