@@ -54,10 +54,10 @@
     },
     computed: {
       l_player_width: function () {
-        return this.l_player_score / this.fullScore * 100
+        return this.PkDetailFrom.score / this.fullScore * 100
       },
       r_player_width: function () {
-        return this.r_player_score / this.fullScore * 100
+        return this.PkDetailTo.score / this.fullScore * 100
       }
     },
     props: ['player', 'time', 'total', 'current', 'PkDetailFrom', 'PkDetailTo'],

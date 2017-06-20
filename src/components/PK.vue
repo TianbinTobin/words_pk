@@ -9,7 +9,7 @@
           name="custom-classes-transition"
           enter-active-class="animated slideInRight"
           leave-active-class="animated slideOutLeft">
-          <exam-item ref="exam" @send-msg="setMsg" v-for="(exam, index) in examData.data" :key="exam" :exam-item="exam"
+          <exam-item ref="exam" @send-msg="sendMsg" v-for="(exam, index) in examData.data" :key="exam" :exam-item="exam"
                      :exam-index="index" v-show="(index === currentExam)"></exam-item>
         </transition-group>
       </div>
@@ -37,7 +37,7 @@
         examDisplay: false,
         questionNumDisplay: false,
         warning: false,
-        time: 20,
+        time: 21,
         param: {
           roundResult: 0,
           criticalNum: 0,
@@ -55,10 +55,11 @@
           if (this.$refs.exam[this.currentExam].answer === false) {
             this.$refs.exam[this.currentExam].answer = true
             this.param.examNum = this.currentExam
-            this.param.optionNum = null
+            this.param.optionNum = -1
             this.param.useTime = 20
             this.$root.Bus.$emit('send-msg', this.param)
           }
+          this.warningHide()
         }
       }
     },
@@ -70,7 +71,6 @@
         this.warning = false
       },
       nextExam () {
-        this.setOtherCheck(1, 2)
         if (this.countDownTimeOut) {
           clearTimeout(this.countDownTimeOut)
         }
@@ -100,7 +100,7 @@
         }
       },
       resetCountDown () {
-        this.time = 20
+        this.time = 21
         if (this.countDownTimeOut) {
           clearTimeout(this.countDownTimeOut)
         }
@@ -108,19 +108,24 @@
       },
       setMyMsg (data) {
         console.log(data)
+        this.advanceNextExam()
       },
       setOtherMsg (data) {
-        if (data.optionNum !== null) {
-          this.setOtherCheck(data.examNum, data.optionNum)
-        }
+        this.setOtherCheck(data.examNum, data.optionNum)
+        this.advanceNextExam()
       },
-      setMsg (param) {
+      sendMsg (param) {
         param.useTime = 20 - this.time
         this.$root.Bus.$emit('send-msg', param)
       },
       setOtherCheck (examNum, optionNum) {
         if (this.$refs.exam.length > 0) {
           this.$refs.exam[examNum].setOtherCheck(optionNum)
+        }
+      },
+      advanceNextExam () {
+        if (this.$refs.exam[this.currentExam].answer && this.$refs.exam[this.currentExam].otherAnswer) {
+          this.nextExam()
         }
       }
     },

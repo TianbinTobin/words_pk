@@ -1,18 +1,18 @@
 <template>
   <div class="exam_option" :class="{me: meCheck}" @click="optionClick()">
     <transition
-      name="custom-classes-transition"
+      name="left-classes-transition"
       enter-active-class="animated slideInLeft"
       leave-active-class="animated slideOutLeft">
       <div class="exam_option_icon_left" v-show="meCheck"></div>
     </transition>
+    <span class="exam_option_text">{{examOption.text}}</span>
     <transition
-      name="custom-classes-transition"
+      name="right-classes-transition"
       enter-active-class="animated slideInRight"
       leave-active-class="animated slideOutRight">
       <div class="exam_option_icon_right" v-show="otherCheck"></div>
     </transition>
-    <span class="exam_option_text">{{examOption.text}}</span>
   </div>
 </template>
 

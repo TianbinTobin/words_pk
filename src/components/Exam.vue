@@ -21,7 +21,8 @@
     name: 'examItem',
     data () {
       return {
-        answer: false
+        answer: false,
+        otherAnswer: false
       }
     },
     components: {
@@ -35,8 +36,11 @@
         this.$emit('send-msg', param)
       },
       setOtherCheck (optionNum) {
-        if (this.$children.length > 0) {
-          this.$children[optionNum].setChecked()
+        this.otherAnswer = true
+        if (optionNum !== -1) {
+          if (this.$children.length > 0) {
+            this.$children[optionNum].setChecked()
+          }
         }
       },
       playAudio () {
