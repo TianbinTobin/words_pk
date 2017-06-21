@@ -43,6 +43,13 @@
           }
         }
       },
+      setCheckShow (optionNum) {
+        if (optionNum !== -1) {
+          if (this.$children.length > 0) {
+            this.$children[optionNum].setCheckShow()
+          }
+        }
+      },
       playAudio () {
         this.audio.play()
       }

@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="player_list clearfix" @click="nextExam">
-      <div class="player_score">{{current+1}}/{{total}}</div>
+      <div class="player_score">{{PkDetailFrom.score}}/{{PkDetailTo.score}}</div>
       <transition
         name="custom-classes-transition"
         enter-active-class="animated slideInLeft"

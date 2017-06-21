@@ -120,11 +120,14 @@
       },
       setOtherCheck (examNum, optionNum) {
         if (this.$refs.exam.length > 0) {
+          this.examNum = examNum
+          this.optionNum = optionNum
           this.$refs.exam[examNum].setOtherCheck(optionNum)
         }
       },
       advanceNextExam () {
         if (this.$refs.exam[this.currentExam].answer && this.$refs.exam[this.currentExam].otherAnswer) {
+          this.$refs.exam[this.examNum].setCheckShow(this.optionNum)
           this.nextExam()
         }
       }

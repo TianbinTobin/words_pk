@@ -11,7 +11,7 @@
       name="right-classes-transition"
       enter-active-class="animated slideInRight"
       leave-active-class="animated slideOutRight">
-      <div class="exam_option_icon_right" v-show="otherCheck"></div>
+      <div class="exam_option_icon_right" v-show="otherCheckShow"></div>
     </transition>
   </div>
 </template>
@@ -23,6 +23,7 @@
       return {
         meCheck: false,
         otherCheck: false,
+        otherCheckShow: false,
         param: {
           roundResult: 0,
           criticalNum: 0,
@@ -47,6 +48,9 @@
       },
       setChecked () {
         this.otherCheck = true
+      },
+      setCheckShow () {
+        this.otherCheckShow = true
       }
     }
   }
