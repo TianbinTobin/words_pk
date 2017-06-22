@@ -11,14 +11,14 @@
             <div class="w_player_a"></div>
             <div class="w_player_b"></div>
             <div class="w_player_c">
-              <img :src="player.l_player.photo">
+              <img :src="player.userStudentPkFrom.photo">
             </div>
           </div>
           <div class="w_player pb" :class="{move_right: state.w_player_move_right}">
             <div class="w_player_a"></div>
             <div class="w_player_b"></div>
             <div class="w_player_c">
-              <img :src="player.r_player.photo">
+              <img :src="player.userStudentPkTo.photo">
             </div>
           </div>
         </div>
@@ -41,11 +41,11 @@
           <div class="radar_player">
             <div class="radar_player_pk" :class="{animation_pk_vs: state.animation_pk_vs}"></div>
             <div class="radar_player_a" :class="{radar_player_a_move: state.radar_player_b_move}">
-              <img :src="player.l_player.photo">
+              <img :src="player.userStudentPkFrom.photo">
             </div>
             <div class="radar_player_b" v-show="state.findRival"
                  :class="{radar_player_b_move: state.radar_player_b_move}">
-              <img :src="player.r_player.photo">
+              <img :src="player.userStudentPkTo.photo">
             </div>
           </div>
           <div class="radar_d"></div>
@@ -81,7 +81,8 @@
         studentId: this.getQueryString('studentId'),
         photo: this.getQueryString('photo'),
         teacherId: this.getQueryString('teacherId'),
-        mode: this.getQueryString('mode')
+        mode: this.getQueryString('mode'),
+        realName: this.getQueryString('name')
       }
     },
     created () {
@@ -91,15 +92,10 @@
     },
     methods: {
       cancelPK () {
-        console.log('socket close')
         this.$emit('close-socket')
       },
       start () {
         this.stateChange()
-//        let _this = this
-//        setTimeout(function () {
-//          _this.$router.push('/pk')
-//        }, 2000)
       },
       stateChange () {
         this.state.label = '开始对战'

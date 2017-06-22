@@ -2,7 +2,7 @@
   <div>
     <div class="app_container">
       <player ref="player" :player="player" :time="time" :current="currentExam" :total="examData.total"
-              :PkDetailFrom="PkDetailFrom" :PkDetailTo="PkDetailTo" @next-exam="nextExam"></player>
+              :userStudentPkDetail="userStudentPkDetail" @next-exam="nextExam"></player>
       <div class="body">
         <transition-group
           tag="div"
@@ -30,7 +30,7 @@
       player,
       examItem
     },
-    props: ['player', 'examData', 'PkDetailFrom', 'PkDetailTo'],
+    props: ['player', 'examData', 'userStudentPkDetail'],
     data: function () {
       return {
         currentExam: 0,
@@ -83,6 +83,8 @@
         if (this.currentExam < this.examData.total - 1) {
           this.currentExam++
           this.resetCountDown()
+        } else {
+          this.warningHide()
         }
       },
       countDown () {
@@ -107,7 +109,6 @@
         this.countDown()
       },
       setMyMsg (data) {
-        console.log(data)
         this.advanceNextExam()
       },
       setOtherMsg (data) {
@@ -133,7 +134,7 @@
       }
     },
     mounted () {
-      this.resetCountDown()
+//      this.resetCountDown()
     }
   }
 </script>
@@ -183,34 +184,6 @@
     to {
       opacity: .01
     }
-  }
-
-  .question_num_container {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all;
-    transform: translate3d(100%, 0, 0)
-  }
-
-  .question_num_label {
-    width: 20rem;
-    height: 8rem;
-    text-align: center;
-    line-height: 8.6rem;
-    color: #666;
-    font-size: 2rem;
-    background: url(../assets/bg-question-label.png) no-repeat 0;
-    background-size: 100%
-  }
-
-  .question_number_animating {
-    animation: question_number_move 1.8s cubic-bezier(0, 1, 1, 0) .1s 1
   }
 
   @keyframes question_number_move {

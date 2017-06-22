@@ -1,13 +1,13 @@
 <template>
   <div class="header">
     <div class="player_list clearfix" @click="nextExam">
-      <div class="player_score">{{PkDetailFrom.score}}/{{PkDetailTo.score}}</div>
+      <div class="player_score">{{userStudentPkDetail.userStudentPkDetailFrom.score}}/{{userStudentPkDetail.userStudentPkDetailTo.score}}</div>
       <transition
         name="custom-classes-transition"
         enter-active-class="animated slideInLeft"
         leave-active-class="animated fadeOut">
         <div class="player_critical" v-show="criticalShow">
-          <span class="player_critical_label">X{{PkDetailFrom.criticalNum}}</span>
+          <span class="player_critical_label">X{{userStudentPkDetail.userStudentPkDetailFrom.criticalNum}}</span>
         </div>
       </transition>
       <div class="player_item_l fl clearfix">
@@ -15,10 +15,10 @@
           <div class="player_logo_cover">
             <span class="label">{{time}}</span>
           </div>
-          <img :src="player.l_player.photo">
+          <img :src="player.userStudentPkFrom.photo">
         </div>
         <div class="player_label">
-          <div class="player_user fl">{{player.l_player.realName}}</div>
+          <div class="player_user fl">{{player.userStudentPkFrom.realName}}</div>
         </div>
         <div class="player_progress clearfix">
           <div class="player_progress_score fr" :style="{ width: l_player_width + '%' }"></div>
@@ -29,10 +29,10 @@
           <div class="player_logo_cover">
             <span class="label">{{time}}</span>
           </div>
-          <img :src="player.r_player.photo">
+          <img :src="player.userStudentPkTo.photo">
         </div>
         <div class="player_label">
-          <div class="player_user fr">{{player.r_player.realName}}</div>
+          <div class="player_user fr">{{player.userStudentPkTo.realName}}</div>
         </div>
         <div class="player_progress clearfix">
           <div class="player_progress_score fl" :style="{ width: r_player_width + '%' }"></div>
@@ -54,16 +54,16 @@
     },
     computed: {
       l_player_width: function () {
-        return this.PkDetailFrom.score / this.fullScore * 100
+        return this.userStudentPkDetail.userStudentPkDetailFrom.score / this.fullScore * 100
       },
       r_player_width: function () {
-        return this.PkDetailTo.score / this.fullScore * 100
+        return this.userStudentPkDetail.userStudentPkDetailTo.score / this.fullScore * 100
       }
     },
-    props: ['player', 'time', 'total', 'current', 'PkDetailFrom', 'PkDetailTo'],
+    props: ['player', 'time', 'current', 'userStudentPkDetail'],
     watch: {
-      PkDetailFrom: function (val, oldVal) {
-        if (val.criticalNum > 0) {
+      userStudentPkDetail: function (val, oldVal) {
+        if (val.userStudentPkDetailFrom.criticalNum > 0) {
           this.runCritical()
         }
       }
@@ -164,6 +164,7 @@
     background: rgba(0, 0, 0, 0.37);
     font-size: 2rem;
     color: #FFFFFF;
+    border-radius: 50%;
   }
 
   .player_logo_cover .label {
