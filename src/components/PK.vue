@@ -2,7 +2,7 @@
   <div>
     <div class="app_container">
       <player ref="player" :player="player" :time="time" :current="currentExam" :total="examData.total"
-              :userStudentPkDetail="userStudentPkDetail" @next-exam="nextExam"></player>
+              :userStudentPkDetail="userStudentPkDetail" @next-exam="nextExam" @click="nextExam"></player>
       <div class="body">
         <transition-group
           tag="div"
@@ -57,6 +57,7 @@
             this.param.examNum = this.currentExam
             this.param.optionNum = -1
             this.param.useTime = 20
+            this.param.wordId = this.examData[this.currentExam].word.id
             this.$root.Bus.$emit('send-msg', this.param)
           }
           this.warningHide()
@@ -82,7 +83,7 @@
       changeExam () {
         if (this.currentExam < this.examData.total - 1) {
           this.currentExam++
-          this.resetCountDown()
+//          this.resetCountDown()
         } else {
           this.warningHide()
         }
@@ -129,6 +130,7 @@
       advanceNextExam () {
         if (this.$refs.exam[this.currentExam].answer && this.$refs.exam[this.currentExam].otherAnswer) {
           this.$refs.exam[this.examNum].setCheckShow(this.optionNum)
+          this.$refs.exam[this.examNum].show()
           this.nextExam()
         }
       }

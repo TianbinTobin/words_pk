@@ -1,5 +1,47 @@
 <template>
-  <div class="exam_body">
+  <div class="exam_body" v-if="examItem.examWordType === 'SYRC'">
+    <div class="exam_title">
+      <div>{{examItem.stems.wordAttribute}}{{examItem.stems.wordTranslate}}</div>
+      <div class="exam_title_voice">
+        <button class="btn_voice" @click="playAudio">
+          <span class="btn_voice_label">朗读</span>
+          <i class="btn_voice_icon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="exam_options">
+      <exam-option v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item" :answer="answer" @exam-option-click="optionClick"></exam-option>
+    </div>
+  </div>
+  <div class="exam_body" v-else-if="examItem.examWordType === 'TYXJ'">
+    <div class="exam_title">
+      <div>{{examItem.stems.wordName}}</div>
+      <div class="exam_title_voice">
+        <button class="btn_voice" @click="playAudio">
+          <span class="btn_voice_label">朗读</span>
+          <i class="btn_voice_icon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="exam_options">
+      <exam-option v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item" :answer="answer" @exam-option-click="optionClick"></exam-option>
+    </div>
+  </div>
+  <div class="exam_body" v-else-if="examItem.examWordType === 'KCBT'">
+    <div class="exam_title">
+      <div>{{examItem.stems.wordName}}</div>
+      <div class="exam_title_voice">
+        <button class="btn_voice" @click="playAudio">
+          <span class="btn_voice_label">朗读</span>
+          <i class="btn_voice_icon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="exam_options_pic">
+      <exam-option-pic v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item" :answer="answer" @exam-option-click="optionClick"></exam-option-pic>
+    </div>
+  </div>
+  <div class="exam_body" v-else-if="examItem.examWordType">
     <div class="exam_title">
       <div>{{examItem.stems.wordName}}</div>
       <div class="exam_title_voice">
@@ -17,6 +59,7 @@
 
 <script>
   import examOption from './ExamOption.vue'
+  import examOptionPic from './ExamOptionPic.vue'
   export default {
     name: 'examItem',
     data () {
@@ -26,13 +69,15 @@
       }
     },
     components: {
-      examOption
+      examOption,
+      examOptionPic
     },
     props: ['examItem', 'examIndex'],
     methods: {
       optionClick (param) {
         this.answer = true
         param.examNum = this.examIndex
+        param.wordId = this.examItem.word.id
         this.$emit('send-msg', param)
       },
       setOtherCheck (optionNum) {
@@ -49,6 +94,11 @@
             this.$children[optionNum].setCheckShow()
           }
         }
+      },
+      show () {
+        this.$children.forEach(function (item) {
+          item.show()
+        })
       },
       playAudio () {
         this.audio.play()
@@ -115,5 +165,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+  }
+  .exam_options_pic {
+    width: 100%;
+    min-height: 25rem;
   }
 </style>

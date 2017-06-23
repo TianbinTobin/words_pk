@@ -1,24 +1,26 @@
 <template>
-  <div class="exam_option" :class="{right: right, error: error}" @click="optionClick()">
+  <div class="exam_option_pic" :class="{right: right, error: error, animation_scale_pic: meCheck}" @click="optionClick()">
     <transition
       name="left-classes-transition"
       enter-active-class="animated slideInLeft"
       leave-active-class="animated slideOutLeft">
-      <div class="exam_option_icon_left" v-show="meCheck"></div>
+      <div class="exam_option_icon_left_pic" v-show="meCheck"></div>
     </transition>
-    <span class="exam_option_text">{{examOption.text}}</span>
+    <div class="exam_option_text">
+      <img :src="examOption.text" alt="选项">
+    </div>
     <transition
       name="right-classes-transition"
       enter-active-class="animated slideInRight"
       leave-active-class="animated slideOutRight">
-      <div class="exam_option_icon_right" v-show="otherCheckShow"></div>
+      <div class="exam_option_icon_right_pic" v-show="otherCheckShow"></div>
     </transition>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'examOption',
+    name: 'examOptionPic',
     data () {
       return {
         right: false,
@@ -68,53 +70,53 @@
 </script>
 
 <style scoped>
-  .exam_option {
-    width: 100%;
+  .exam_option_pic {
+    width: calc(50% - 6px);
+    float: left;
     text-align: center;
     box-sizing: border-box;
-    height: 50px;
-    border: 1px solid #CBCBCB;
-    border-radius: 100px;
+    height: 12rem;
     font-size: 18px;
     position: relative;
+    margin: 3px;
   }
 
-  .exam_option.right {
-    border: 0;
-    background: #27D4D7;
+  .exam_option_pic.right {
+    border: 3px solid #27D4D7;
   }
 
-  .exam_option.error {
-    border: 0;
-    background: #FF2952;
+  .exam_option_pic.error {
+    border: 3px solid #FF2952;
   }
 
   .me .exam_option_text{
     color: #ffffff;
   }
 
-  .exam_option_icon_left {
+  .exam_option_icon_left_pic {
     position: absolute;
     height: 3rem;
-    left: -30px;
+    left: 0;
     top: 0;
     bottom: 0;
     margin: auto;
     width: 5.5rem;
     background: url("../assets/img_tank_right.png") no-repeat center;
     background-size: contain;
+    z-index: 9;
   }
 
-  .exam_option_icon_right {
+  .exam_option_icon_right_pic {
     position: absolute;
     height: 3rem;
-    right: -30px;
+    right: 0;
     top: 0;
     bottom: 0;
     margin: auto;
     width: 5.5rem;
     background: url("../assets/img_tank_left.png") no-repeat center;
     background-size: contain;
+    z-index: 9;
   }
 
   .exam_option_text {
@@ -127,5 +129,29 @@
     align-items: center;
     align-content: space-between;
     flex-wrap: wrap;
+  }
+
+  .exam_option_text>img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .animation_scale_pic {
+    animation: animation_scale_pic_action 1.2s ease-out;
+    animation-fill-mode: forwards;
+    transition: all linear 1.2s;
+    z-index: 8;
+  }
+
+  @keyframes animation_scale_pic_action {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 </style>

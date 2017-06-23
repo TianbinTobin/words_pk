@@ -205,6 +205,7 @@
     width: 60%;
     height: 100%;
     text-overflow: ellipsis;
+    font-size: 1.2rem;
   }
 
   .player_progress {
