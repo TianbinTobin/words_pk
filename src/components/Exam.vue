@@ -2,7 +2,7 @@
   <div class="exam_body" v-if="examItem.examWordType === 'SYRC'">
     <div class="exam_title">
       <div>{{examItem.stems.wordAttribute}}{{examItem.stems.wordTranslate}}</div>
-      <div class="exam_title_voice">
+      <div class="exam_title_voice" v-if="examItem.stems.wordConvertPath">
         <button class="btn_voice" @click="playAudio">
           <span class="btn_voice_label">朗读</span>
           <i class="btn_voice_icon"></i>
@@ -10,13 +10,14 @@
       </div>
     </div>
     <div class="exam_options">
-      <exam-option v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item" :answer="answer" @exam-option-click="optionClick"></exam-option>
+      <exam-option v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item"
+                   :answer="answer" @exam-option-click="optionClick"></exam-option>
     </div>
   </div>
   <div class="exam_body" v-else-if="examItem.examWordType === 'TYXJ'">
     <div class="exam_title">
       <div>{{examItem.stems.wordName}}</div>
-      <div class="exam_title_voice">
+      <div class="exam_title_voice" v-if="examItem.stems.wordConvertPath">
         <button class="btn_voice" @click="playAudio">
           <span class="btn_voice_label">朗读</span>
           <i class="btn_voice_icon"></i>
@@ -24,13 +25,14 @@
       </div>
     </div>
     <div class="exam_options">
-      <exam-option v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item" :answer="answer" @exam-option-click="optionClick"></exam-option>
+      <exam-option v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item"
+                   :answer="answer" @exam-option-click="optionClick"></exam-option>
     </div>
   </div>
   <div class="exam_body" v-else-if="examItem.examWordType === 'KCBT'">
     <div class="exam_title">
       <div>{{examItem.stems.wordName}}</div>
-      <div class="exam_title_voice">
+      <div class="exam_title_voice" v-if="examItem.stems.wordConvertPath">
         <button class="btn_voice" @click="playAudio">
           <span class="btn_voice_label">朗读</span>
           <i class="btn_voice_icon"></i>
@@ -38,13 +40,14 @@
       </div>
     </div>
     <div class="exam_options_pic">
-      <exam-option-pic v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item" :answer="answer" @exam-option-click="optionClick"></exam-option-pic>
+      <exam-option-pic v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item"
+                       :answer="answer" @exam-option-click="optionClick"></exam-option-pic>
     </div>
   </div>
-  <div class="exam_body" v-else-if="examItem.examWordType">
+  <div class="exam_body" v-else-if="examItem.examWordType === 'TYXC'">
     <div class="exam_title">
-      <div>{{examItem.stems.wordName}}</div>
-      <div class="exam_title_voice">
+      <div>{{examItem.stems.wordSymbolMarker}}</div>
+      <div class="exam_title_voice" v-if="examItem.stems.wordConvertPath">
         <button class="btn_voice" @click="playAudio">
           <span class="btn_voice_label">朗读</span>
           <i class="btn_voice_icon"></i>
@@ -52,7 +55,69 @@
       </div>
     </div>
     <div class="exam_options">
-      <exam-option v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item" :answer="answer" @exam-option-click="optionClick"></exam-option>
+      <exam-option v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item"
+                   :answer="answer" @exam-option-click="optionClick"></exam-option>
+    </div>
+  </div>
+  <div class="exam_body" v-else-if="examItem.examWordType === 'TYBC'">
+    <div class="exam_title">
+      <div>{{examItem.stems.wordSymbolMarker}}</div>
+      <div class="exam_title_voice" v-if="examItem.stems.wordConvertPath">
+        <button class="btn_voice" @click="playAudio">
+          <span class="btn_voice_label">朗读</span>
+          <i class="btn_voice_icon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="exam_options">
+      <exam-option v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item"
+                   :answer="answer" @exam-option-click="optionClick"></exam-option>
+    </div>
+  </div>
+  <div class="exam_body" v-else-if="examItem.examWordType === 'TYBY'">
+    <div class="exam_title">
+      <div>{{examItem.stems.wordSymbolMarker}}</div>
+      <div class="exam_title_voice" v-if="examItem.stems.wordConvertPath">
+        <button class="btn_voice" @click="playAudio">
+          <span class="btn_voice_label">朗读</span>
+          <i class="btn_voice_icon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="exam_options">
+      <exam-option v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item"
+                   :answer="answer" @exam-option-click="optionClick"></exam-option>
+    </div>
+  </div>
+  <div class="exam_body" v-else-if="examItem.examWordType === 'XCTK'">
+    <div class="exam_title">
+      <div class="xctk_en" v-html="wordSentenceEnLabel"></div>
+      <div class="xctk_zh" v-html="wordSentenceZhLabel"></div>
+      <div class="exam_title_voice" v-if="examItem.stems.wordConvertPath">
+        <button class="btn_voice" @click="playAudio">
+          <span class="btn_voice_label">朗读</span>
+          <i class="btn_voice_icon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="exam_options">
+      <exam-option v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item"
+                   :answer="answer" @exam-option-click="optionClick"></exam-option>
+    </div>
+  </div>
+  <div class="exam_body" v-else-if="examItem.examWordType">
+    <div class="exam_title">
+      <div>{{examItem.stems.wordName}}</div>
+      <div class="exam_title_voice" v-if="examItem.stems.wordConvertPath">
+        <button class="btn_voice" @click="playAudio">
+          <span class="btn_voice_label">朗读</span>
+          <i class="btn_voice_icon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="exam_options">
+      <exam-option v-for="(item, index) in examItem.options" :key="item" :option-index="index" :exam-option="item"
+                   :answer="answer" @exam-option-click="optionClick"></exam-option>
     </div>
   </div>
 </template>
@@ -73,6 +138,31 @@
       examOptionPic
     },
     props: ['examItem', 'examIndex'],
+    computed: {
+      wordSentenceEnLabel () {
+        if (this.examItem.stems.wordSentenceEnLabel) {
+          return this.examItem.stems.wordSentenceEnLabel.toString().replace(/<b>.*<\/b>/g, '<u>&nbsp;&nbsp;&nbsp;&nbsp;</u>')
+        } else {
+          return ''
+        }
+      },
+      wordSentenceZhLabel () {
+        if (this.examItem.stems.wordSentenceZhLabel) {
+          return this.examItem.stems.wordSentenceZhLabel.toString().replace(/<[^>]+>/g, '')
+        } else {
+          return ''
+        }
+      }
+    },
+    filters: {
+      replaceBlack: function (value) {
+        if (!value) {
+          return ''
+        }
+        value = value.toString()
+        return value.replace(/<b>.*<\/b>/g, '<u>&nbsp;&nbsp;&nbsp;</u>')
+      }
+    },
     methods: {
       optionClick (param) {
         this.answer = true
@@ -102,6 +192,9 @@
       },
       playAudio () {
         this.audio.play()
+      },
+      replaceBlack (sentence) {
+        return sentence.replace(/^<b>.*<\/b>$/, 'aa')
       }
     },
     mounted () {
@@ -128,6 +221,15 @@
     min-height: 10rem;
     text-align: center;
     font-size: 28px;
+  }
+
+  .exam_title .xctk_en {
+    font-size: 24px;
+  }
+
+  .exam_title .xctk_zh {
+    font-size: 18px;
+    margin-top: 20px;
   }
 
   .exam_title_voice {
@@ -166,6 +268,7 @@
     flex-direction: column;
     justify-content: space-between;
   }
+
   .exam_options_pic {
     width: 100%;
     min-height: 25rem;

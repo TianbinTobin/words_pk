@@ -22,38 +22,13 @@
             realName: this.query.realName
           },
           userStudentPkTo: {
-            photo: require('../assets/player_0_logo.png'),
+            photo: 'static/img/player_0_logo.png',
             realName: ''
           }
         },
         exam: {
-          data: [
-            {
-              stems: {
-                wordName: 'Hello',
-                wordConvertPath: 'http://192.168.0.203/media/audio/201705/54cd57d15a4f4288898694421b569442.mp3'
-              },
-              options: [
-                {
-                  answer: true,
-                  text: 'Hello'
-                },
-                {
-                  answer: false,
-                  text: 'Hello'
-                },
-                {
-                  answer: false,
-                  text: 'Hello'
-                },
-                {
-                  answer: false,
-                  text: 'Hello'
-                }
-              ]
-            }
-          ],
-          total: 1
+          data: [],
+          total: 0
         },
         userStudentPkDetail: {
           userStudentPkDetailFrom: {
