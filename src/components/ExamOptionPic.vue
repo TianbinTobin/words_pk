@@ -89,10 +89,6 @@
     border: 3px solid #FF2952;
   }
 
-  .me .exam_option_text{
-    color: #ffffff;
-  }
-
   .exam_option_icon_left_pic {
     position: absolute;
     height: 3rem;
@@ -137,9 +133,9 @@
   }
 
   .animation_scale_pic {
-    animation: animation_scale_pic_action 1.2s ease-out;
+    animation: animation_scale_pic_action 0.8s linear;
     animation-fill-mode: forwards;
-    transition: all linear 1.2s;
+    transition: all linear 0.8s;
     z-index: 8;
   }
 

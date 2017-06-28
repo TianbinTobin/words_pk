@@ -82,14 +82,12 @@
   .exam_option.right {
     border: 0;
     background: #27D4D7;
+    color: #ffffff
   }
 
   .exam_option.error {
     border: 0;
     background: #FF2952;
-  }
-
-  .me .exam_option_text{
     color: #ffffff;
   }
 

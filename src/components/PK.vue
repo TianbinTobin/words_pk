@@ -131,7 +131,6 @@
       advanceNextExam () {
         if (this.$refs.exam[this.currentExam].answer && this.$refs.exam[this.currentExam].otherAnswer) {
           this.$refs.exam[this.examNum].setCheckShow(this.optionNum)
-          this.$refs.exam[this.examNum].show()
           this.nextExam()
         }
       }

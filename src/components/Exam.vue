@@ -168,6 +168,7 @@
         this.answer = true
         param.examNum = this.examIndex
         param.wordId = this.examItem.word.id
+        this.show()
         this.$emit('send-msg', param)
       },
       setOtherCheck (optionNum) {
