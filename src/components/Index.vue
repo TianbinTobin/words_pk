@@ -18,11 +18,11 @@
         finish: false,
         player: {
           userStudentPkFrom: {
-            photo: this.query.photo,
-            realName: this.query.realName
+            photo: require('../assets/player_0_logo.png'),
+            realName: this.query.name
           },
           userStudentPkTo: {
-            photo: 'static/img/player_0_logo.png',
+            photo: require('../assets/player_0_logo.png'),
             realName: ''
           }
         },
@@ -69,7 +69,7 @@
         },
         socket: null,  // WebSocket实例
         lockReconnect: false, // 避免重复连接
-        wsUrl: 'ws://192.168.0.152:8085/ws?unitId=1&studentId=' + this.query.studentId
+        wsUrl: 'ws://192.168.0.203:8091/socket/ws?unitId=1&studentId=' + this.query.studentId
       }
     },
     methods: {
@@ -184,12 +184,16 @@
         photo: this.getQueryString('photo'),
         friendId: this.getQueryString('friendId'),
         mode: this.getQueryString('mode'),
-        realName: this.getQueryString('name')
+        name: this.getQueryString('name'),
+        token: this.getQueryString('token')
       }
     },
     mounted () {
       const _this = this
       this.$root.Bus.$on('send-msg', this.sendMsg)
+      if (this.query.photo) {
+        this.player.userStudentPkFrom.photo = this.query.photo
+      }
       if (this.query.studentId) {
         _this.heartCheck = {
           timeout: 30000,

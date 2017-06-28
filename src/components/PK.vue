@@ -57,7 +57,7 @@
             this.param.examNum = this.currentExam
             this.param.optionNum = -1
             this.param.useTime = 20
-            this.param.wordId = this.examData[this.currentExam].word.id
+            this.param.wordId = this.examData.data[this.currentExam].word.id
             this.$root.Bus.$emit('send-msg', this.param)
           }
           this.warningHide()
@@ -83,7 +83,7 @@
       changeExam () {
         if (this.currentExam < this.examData.total - 1) {
           this.currentExam++
-//          this.resetCountDown()
+          this.resetCountDown()
         } else {
           this.warningHide()
         }
@@ -110,6 +110,7 @@
         this.countDown()
       },
       setMyMsg (data) {
+        console.log(data)
         this.advanceNextExam()
       },
       setOtherMsg (data) {
@@ -136,7 +137,7 @@
       }
     },
     mounted () {
-//      this.resetCountDown()
+      this.resetCountDown()
     }
   }
 </script>

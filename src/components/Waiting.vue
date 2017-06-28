@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="w_player_label">
-          <span>{{state.label}}</span>
+          <span :class="{w_player_label_animate: !startPK}">{{state.label}}</span>
         </div>
       </div>
     </div>
@@ -65,13 +65,14 @@
     data () {
       return {
         friendPK: true,
+        startPK: false,
         state: {
           w_player_move_left: false,
           w_player_move_right: false,
           animation_pk_vs: false,
           radar_player_b_move: false,
           btnShow: true,
-          label: '等待对方响应号召...',
+          label: '等待对方响应号召',
           findRival: false
         }
       }
@@ -82,7 +83,8 @@
         photo: this.getQueryString('photo'),
         teacherId: this.getQueryString('teacherId'),
         mode: this.getQueryString('mode'),
-        realName: this.getQueryString('name')
+        name: this.getQueryString('name'),
+        token: this.getQueryString('token')
       }
     },
     created () {
@@ -95,6 +97,7 @@
         this.$emit('close-socket')
       },
       start () {
+        this.startPK = true
         this.stateChange()
       },
       stateChange () {
@@ -452,6 +455,29 @@
   .w_player_label span {
     font-size: 20px;
     color: #66C224;
+  }
+
+  .w_player_label .w_player_label_animate:after {
+    content: '';
+    animation: animation_wait_label_action 2.4s linear infinite;
+  }
+
+  @keyframes animation_wait_label_action {
+    0% {
+      content: '';
+    }
+    25% {
+      content: '.';
+    }
+    50% {
+      content: '..';
+    }
+    75% {
+      content: '...';
+    }
+    100% {
+      content: '';
+    }
   }
 
   .w_foot {

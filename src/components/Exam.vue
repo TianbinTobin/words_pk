@@ -198,9 +198,11 @@
       }
     },
     mounted () {
-      this.audio = document.createElement('audio')
-      this.audio.controls = false
-      this.audio.src = this.examItem.stems.wordConvertPath
+      if (this.examItem.stems.wordConvertPath) {
+        this.audio = document.createElement('audio')
+        this.audio.controls = false
+        this.audio.src = this.examItem.stems.wordConvertPath
+      }
     }
   }
 </script>
