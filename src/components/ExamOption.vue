@@ -67,7 +67,7 @@
   }
 </script>
 
-<style scoped>
+<style>
   .exam_option {
     width: 100%;
     text-align: center;

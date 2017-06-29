@@ -16,6 +16,7 @@
       return {
         pk: false,
         finish: false,
+        robot: false,
         player: {
           userStudentPkFrom: {
             photo: require('../assets/player_0_logo.png'),
@@ -69,7 +70,7 @@
         },
         socket: null,  // WebSocket实例
         lockReconnect: false, // 避免重复连接
-        wsUrl: 'ws://192.168.0.203:8091/socket/ws?unitId=1&studentId=' + this.query.studentId
+        wsUrl: 'ws://192.168.0.152:8085/ws?unitId=1&studentId=' + this.query.studentId
       }
     },
     methods: {
@@ -125,6 +126,9 @@
         this.socket.close()
       },
       sendMsg (data) {
+        if (this.robot) {
+          data.userMode = 6
+        }
         data.studentId = this.param.studentId
         data.friendId = this.param.friendId
         this.socket.send(JSON.stringify(data))
@@ -132,6 +136,11 @@
         if (data.examNum === 19) {
           this.end()
         }
+      },
+      matchRobot () {
+        this.param.userMode = 5
+        this.socket.send(JSON.stringify(this.param))
+        this.robot = true
       },
       pkStart (data) {
         console.log(data)
@@ -161,9 +170,16 @@
       },
       messageHandler (data) {
         console.log(data)
+        let _this = this
         if (data.userStudentPkDetail.code === 1) {
+          if (this.matchRobotTimeOut) {
+            clearTimeout(this.matchRobotTimeOut)
+          }
           if (!this.pk) {
-            this.pkStart(data)
+            this.$refs.wait.start()
+            setTimeout(function () {
+              _this.pkStart(data)
+            }, 3000)
           }
         } else if (data.userStudentPkDetail.code === 2) {
           this.getMyMsg(data)
@@ -218,8 +234,10 @@
             }, this.timeout)
           }
         }
-        console.log('start')
         _this.createWebSocket(_this.wsUrl)
+        if (_this.query.mode === '2') {
+          _this.matchRobotTimeOut = setTimeout(_this.matchRobot, 10000)
+        }
       }
     }
   }

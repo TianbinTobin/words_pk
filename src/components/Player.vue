@@ -85,7 +85,7 @@
     }
   }
 </script>
-<style scoped>
+<style>
   .header {
     width: 100%;
     box-sizing: border-box;

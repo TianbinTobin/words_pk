@@ -113,8 +113,7 @@
   }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
   .bg {
     background: url(../assets/bj_img_yingzhan.png) no-repeat;
     background-size: cover;

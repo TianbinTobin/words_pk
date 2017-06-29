@@ -69,7 +69,7 @@
   }
 </script>
 
-<style scoped>
+<style>
   .exam_option_pic {
     width: calc(50% - 6px);
     float: left;

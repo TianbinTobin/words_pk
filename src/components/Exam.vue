@@ -208,7 +208,7 @@
   }
 </script>
 
-<style scoped>
+<style>
   .exam_body {
     width: 100%;
     box-sizing: border-box;
