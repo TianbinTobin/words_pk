@@ -110,7 +110,6 @@
         this.countDown()
       },
       setMyMsg (data) {
-        console.log(data)
         this.advanceNextExam()
       },
       setOtherMsg (data) {

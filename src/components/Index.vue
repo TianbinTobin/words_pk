@@ -161,15 +161,16 @@
         this.pk = true
       },
       getMyMsg (data) {
+        console.log(JSON.stringify(data.userStudentPkDetail))
         this.userStudentPkDetail.userStudentPkDetailFrom = data.userStudentPkDetail
         this.$refs.pk.setMyMsg(data.userStudentPkDetail)
       },
       getOtherMsg (data) {
+        console.log(JSON.stringify(data.userStudentPkDetail))
         this.userStudentPkDetail.userStudentPkDetailTo = data.userStudentPkDetail
         this.$refs.pk.setOtherMsg(data.userStudentPkDetail)
       },
       messageHandler (data) {
-        console.log(data)
         let _this = this
         if (data.userStudentPkDetail.code === 1) {
           if (this.matchRobotTimeOut) {
@@ -225,7 +226,7 @@
             this.timeoutObj = setTimeout(function () {
               // 这里发送一个心跳，后端收到后，返回一个心跳消息，
               // onmessage拿到返回的心跳就说明连接正常
-              _this.sendMsg({code: 4, userMode: 4})
+              _this.socket.send(JSON.stringify({code: 4, userMode: 4, studentId: _this.param.studentId}))
               // 如果超过一定时间还没重置，说明后端主动断开了
               self.serverTimeoutObj = setTimeout(function () {
                 // 如果onclose会执行reconnect，我们执行ws.close()就行了.如果直接执行reconnect 会触发onclose导致重连两次
