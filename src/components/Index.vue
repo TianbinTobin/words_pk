@@ -99,7 +99,7 @@
         this.socket.onopen = function () {
           // 心跳检测重置
           _this.heartCheck.reset().start()
-          console.log(JSON.stringify(_this.param))
+          console.log('socket open', JSON.stringify(_this.param))
           _this.socket.send(JSON.stringify(_this.param))
         }
         this.socket.onmessage = function (event) {
@@ -132,7 +132,7 @@
         data.studentId = this.param.studentId
         data.friendId = this.param.friendId
         this.socket.send(JSON.stringify(data))
-        console.log(JSON.stringify(data))
+        console.log('socket send', JSON.stringify(data))
         if (data.examNum === 19) {
           this.end()
         }
@@ -161,12 +161,12 @@
         this.pk = true
       },
       getMyMsg (data) {
-        console.log(JSON.stringify(data.userStudentPkDetail))
+        console.log('我的答题信息', JSON.stringify(data.userStudentPkDetail))
         this.userStudentPkDetail.userStudentPkDetailFrom = data.userStudentPkDetail
         this.$refs.pk.setMyMsg(data.userStudentPkDetail)
       },
       getOtherMsg (data) {
-        console.log(JSON.stringify(data.userStudentPkDetail))
+        console.log('对方答题信息', JSON.stringify(data.userStudentPkDetail))
         this.userStudentPkDetail.userStudentPkDetailTo = data.userStudentPkDetail
         this.$refs.pk.setOtherMsg(data.userStudentPkDetail)
       },
