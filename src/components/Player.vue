@@ -58,12 +58,15 @@
       },
       r_player_width: function () {
         return this.userStudentPkDetail.userStudentPkDetailTo.score / this.fullScore * 100
+      },
+      criticalNum: function () {
+        return this.userStudentPkDetail.userStudentPkDetailFrom.criticalNum
       }
     },
     props: ['player', 'time', 'current', 'userStudentPkDetail'],
     watch: {
-      userStudentPkDetail: function (val, oldVal) {
-        if (val.userStudentPkDetailFrom.criticalNum > 0) {
+      criticalNum: function (val, oldVal) {
+        if (val > 0) {
           this.runCritical()
         }
       }
