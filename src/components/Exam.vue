@@ -46,8 +46,8 @@
   </div>
   <div class="exam_body" v-else-if="examItem.examWordType === 'TYXC'">
     <div class="exam_title">
-      <div>{{examItem.stems.wordSymbolMarker}}</div>
-      <div class="exam_title_voice" v-if="examItem.stems.wordConvertPath">
+      <div>{{examItem.stems.wordEn}}</div>
+      <div class="exam_title_voice" v-if="examItem.stems.wordEnConvertPath">
         <button class="btn_voice" @click="playAudio">
           <span class="btn_voice_label">朗读</span>
           <i class="btn_voice_icon"></i>

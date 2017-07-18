@@ -70,7 +70,7 @@
         },
         socket: null,  // WebSocket实例
         lockReconnect: false, // 避免重复连接
-        wsUrl: 'ws://192.168.0.152:8085/ws?unitId=1&studentId=' + this.query.studentId
+        wsUrl: 'ws://192.168.0.152:8085/ws?unitId=' + this.query.unitId + '&studentId=' + this.query.studentId
       }
     },
     methods: {
@@ -123,6 +123,8 @@
       closeSocket () {
         console.log('socket close')
         this.end()
+        this.param.userMode = 7
+        this.sendMsg(this.param)
         this.socket.close()
       },
       sendMsg (data) {
@@ -202,7 +204,8 @@
         friendId: this.getQueryString('friendId'),
         mode: this.getQueryString('mode'),
         name: this.getQueryString('name'),
-        token: this.getQueryString('token')
+        token: this.getQueryString('token'),
+        unitId: this.getQueryString('unitId')
       }
     },
     mounted () {
@@ -237,7 +240,7 @@
         }
         _this.createWebSocket(_this.wsUrl)
         if (_this.query.mode === '2') {
-          _this.matchRobotTimeOut = setTimeout(_this.matchRobot, 10000)
+          _this.matchRobotTimeOut = setTimeout(_this.matchRobot, 15000)
         }
       }
     }
