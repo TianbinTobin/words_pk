@@ -70,7 +70,7 @@
         },
         socket: null,  // WebSocket实例
         lockReconnect: false, // 避免重复连接
-        wsUrl: 'ws://192.168.0.152:8085/ws?unitId=' + this.query.unitId + '&studentId=' + this.query.studentId
+        wsUrl: 'ws://192.168.0.152:8085/ws?unitId=' + this.query.unitId + '&studentId=' + this.query.studentId + '&access_token=' + this.query.token
       }
     },
     methods: {
@@ -204,7 +204,7 @@
         friendId: this.getQueryString('friendId'),
         mode: this.getQueryString('mode'),
         name: this.getQueryString('name'),
-        token: this.getQueryString('token'),
+        token: this.getQueryString('access_token'),
         unitId: this.getQueryString('unitId')
       }
     },

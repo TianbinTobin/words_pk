@@ -84,7 +84,7 @@
         teacherId: this.getQueryString('teacherId'),
         mode: this.getQueryString('mode'),
         name: this.getQueryString('name'),
-        token: this.getQueryString('token')
+        token: this.getQueryString('access_token')
       }
     },
     created () {
