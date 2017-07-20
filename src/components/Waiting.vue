@@ -81,10 +81,11 @@
       this.query = {
         studentId: this.getQueryString('studentId'),
         photo: this.getQueryString('photo'),
-        teacherId: this.getQueryString('teacherId'),
+        friendId: this.getQueryString('friendId'),
         mode: this.getQueryString('mode'),
         name: this.getQueryString('name'),
-        token: this.getQueryString('access_token')
+        token: this.getQueryString('access_token'),
+        unitId: this.getQueryString('unitId')
       }
     },
     created () {

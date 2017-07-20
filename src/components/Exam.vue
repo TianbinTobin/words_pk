@@ -154,15 +154,6 @@
         }
       }
     },
-    filters: {
-      replaceBlack: function (value) {
-        if (!value) {
-          return ''
-        }
-        value = value.toString()
-        return value.replace(/<b>.*<\/b>/g, '<u>&nbsp;&nbsp;&nbsp;</u>')
-      }
-    },
     methods: {
       optionClick (param) {
         this.answer = true
@@ -193,9 +184,6 @@
       },
       playAudio () {
         this.audio.play()
-      },
-      replaceBlack (sentence) {
-        return sentence.replace(/^<b>.*<\/b>$/, 'aa')
       }
     },
     mounted () {

@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="player_list clearfix" @click="nextExam">
+    <div class="player_list clearfix">
       <div class="player_score">{{userStudentPkDetail.userStudentPkDetailFrom.score}}/{{userStudentPkDetail.userStudentPkDetailTo.score}}</div>
       <transition
         name="custom-classes-transition"
@@ -72,9 +72,6 @@
       }
     },
     methods: {
-      nextExam () {
-        this.$emit('next-exam')
-      },
       runCritical () {
         if (this.criticalSetTimeOut) {
           clearTimeout(this.criticalSetTimeOut)
