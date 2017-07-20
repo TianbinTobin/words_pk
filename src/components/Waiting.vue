@@ -32,7 +32,7 @@
     </div>
   </div>
   <div class="wait bg" v-else>
-    <div class="radar_a">
+    <div class="radar_a" :style="{ width: width, height: width }">
       <div class="radar_cover" v-show="!state.animation_pk_vs">
         <div class="radar_cover_scan"></div>
       </div>
@@ -64,6 +64,7 @@
     props: ['player'],
     data () {
       return {
+        width: document.body.clientWidth + 'px',
         friendPK: true,
         startPK: false,
         state: {
@@ -153,19 +154,20 @@
   .radar_a, .radar_b, .radar_c, .radar_d {
     box-sizing: border-box;
     border: 1px solid #ffffff;
-    border-radius: 17.5rem;
+    border-radius: 50%;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     margin: auto;
-    width: 35rem;
-    height: 35rem;
+    width: 100%;
+    height: 100%;
   }
 
   .radar_a {
     transform: scale(1.3);
+    top: -10rem
   }
 
   .radar_b {

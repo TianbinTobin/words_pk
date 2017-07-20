@@ -125,5 +125,8 @@
     align-items: center;
     align-content: space-between;
     flex-wrap: wrap;
+    box-sizing: border-box;
+    padding: 10px 0;
+    line-height: 30px;
   }
 </style>

@@ -212,6 +212,7 @@
     min-height: 10rem;
     text-align: center;
     font-size: 28px;
+    margin-bottom: 1rem;
   }
 
   .exam_title .xctk_en {
@@ -225,12 +226,15 @@
 
   .exam_title_voice {
     width: 100%;
+    height: 3rem;
   }
 
   .btn_voice {
     background-color: #ffffff;
+    display: block;
     border: 0;
-    width: 9rem;
+    margin: 0 auto;
+    width: 12rem;
     height: 2.8rem;
     font-size: 18px;
     color: #747578;

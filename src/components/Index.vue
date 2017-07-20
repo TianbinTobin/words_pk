@@ -1,6 +1,6 @@
 <template>
   <pk ref="pk" v-if="pk" :player="player" :userStudentPkDetail="userStudentPkDetail" :exam-data="exam"></pk>
-  <waiting v-else ref="wait" :player="player" @close-socket="closeSocket"></waiting>
+  <waiting v-else ref="wait" :player="player" @close-socket="stopSocket"></waiting>
 </template>
 
 <script>
@@ -127,6 +127,13 @@
         this.sendMsg(this.param)
         this.socket.close()
       },
+      stopSocket: function () {
+        console.log('stop close')
+        this.stop()
+        this.param.userMode = 7
+        this.sendMsg(this.param)
+        this.socket.close()
+      },
       sendMsg (data) {
         if (this.robot) {
           data.userMode = 6
@@ -193,6 +200,10 @@
         }
       },
       end () {
+        this.finish = true
+        this.heartCheck.reset()
+      },
+      stop: function () {
         this.finish = true
         this.heartCheck.reset()
       }
