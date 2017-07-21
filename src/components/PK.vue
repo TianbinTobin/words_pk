@@ -78,6 +78,7 @@
         if (this.setTimeout) {
           clearTimeout(this.setTimeout)
         }
+        this.$refs.exam[this.currentExam].pauseAudio()
         this.setTimeout = setTimeout(this.changeExam, 1000)
       },
       changeExam () {

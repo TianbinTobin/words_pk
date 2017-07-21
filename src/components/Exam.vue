@@ -184,6 +184,11 @@
       },
       playAudio () {
         this.audio.play()
+      },
+      pauseAudio () {
+        if (this.audio) {
+          this.audio.pause()
+        }
       }
     },
     mounted () {
@@ -191,6 +196,10 @@
         this.audio = document.createElement('audio')
         this.audio.controls = false
         this.audio.src = this.examItem.stems.wordConvertPath
+      } else if (this.examItem.stems.wordEnConvertPath) {
+        this.audio = document.createElement('audio')
+        this.audio.controls = false
+        this.audio.src = this.examItem.stems.wordEnConvertPath
       }
     }
   }
