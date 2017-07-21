@@ -211,16 +211,16 @@
     width: 100%;
     min-height: 10rem;
     text-align: center;
-    font-size: 28px;
+    font-size: 24px;
     margin-bottom: 1rem;
   }
 
   .exam_title .xctk_en {
-    font-size: 24px;
+    font-size: 20px;
   }
 
   .exam_title .xctk_zh {
-    font-size: 18px;
+    font-size: 16px;
     margin-top: 20px;
   }
 

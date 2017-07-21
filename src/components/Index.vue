@@ -221,6 +221,7 @@
     },
     mounted () {
       const _this = this
+      console.log(this.query)
       this.$root.Bus.$on('send-msg', this.sendMsg)
       if (this.query.photo) {
         this.player.userStudentPkFrom.photo = this.query.photo

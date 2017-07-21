@@ -47,7 +47,7 @@
     data () {
       return {
         criticalShow: false,
-        fullScore: 515,
+        fullScore: 483,
         l_player_score: 0,
         r_player_score: 0
       }
